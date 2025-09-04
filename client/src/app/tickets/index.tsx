@@ -12,6 +12,12 @@ import {
 } from "../../features/tickets/hooks";
 import { useTicketStore } from "../../stores/ticketStore";
 import { useUserStore } from "../../stores/userStore";
+import {
+    LoadingSpinner,
+    ErrorDisplay,
+    EmptyState,
+    EmptyStates,
+} from "../../components/common";
 
 export function Tickets() {
     // State for search and filters
@@ -93,18 +99,7 @@ export function Tickets() {
 
     // Show loading state
     if (ticketsLoading || usersLoading) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">
-                        {ticketsLoading
-                            ? "Loading tickets..."
-                            : "Loading users..."}
-                    </p>
-                </div>
-            </div>
-        );
+        return <LoadingSpinner message="Loading tickets..." />;
     }
 
     // Show error state
@@ -114,22 +109,11 @@ export function Tickets() {
         const errorType = ticketsError ? "tickets" : "users";
 
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                        <p className="font-bold">Error loading {errorType}</p>
-                        <p className="text-sm">
-                            {error?.message || "Unknown error occurred"}
-                        </p>
-                    </div>
-                    <button
-                        onClick={refetch}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            </div>
+            <ErrorDisplay
+                error={error}
+                errorType={errorType}
+                onRetry={refetch}
+            />
         );
     }
 
@@ -150,23 +134,9 @@ export function Tickets() {
 
                 {/* Show message if no tickets */}
                 {filteredTickets.length === 0 && tickets.length === 0 ? (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">
-                            No tickets found.
-                        </p>
-                        <p className="text-gray-400 text-sm mt-2">
-                            Create your first ticket to get started.
-                        </p>
-                    </div>
+                    <EmptyState {...EmptyStates.noTickets} />
                 ) : filteredTickets.length === 0 && tickets.length > 0 ? (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">
-                            No tickets match your filters.
-                        </p>
-                        <p className="text-gray-400 text-sm mt-2">
-                            Try adjusting your search criteria.
-                        </p>
-                    </div>
+                    <EmptyState {...EmptyStates.noFilteredResults} />
                 ) : (
                     <TicketList
                         tickets={filteredTickets}

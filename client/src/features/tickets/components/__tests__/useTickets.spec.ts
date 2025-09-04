@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { useTickets } from './useTickets';
+import { useTickets } from '../hooks/useTickets';
 import { ticketService } from '../../../services/ticket.service';
 import { useTicketStore } from '../../../stores/ticketStore';
 

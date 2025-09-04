@@ -18,12 +18,6 @@ export const AddTicketModal: React.FC<AddTicketModalProps> = ({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (!description.trim()) {
-            setError("Description is required");
-            return;
-        }
-
         setError(null);
 
         try {

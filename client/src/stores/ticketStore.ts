@@ -15,12 +15,6 @@ interface TicketActions {
 
     // Domain-level bulk replace (kept for API hydration)
     setTickets: (tickets: Ticket[]) => void;
-
-    // Computed getters
-    getTicketById: (id: number) => Ticket | undefined;
-    getCompletedTickets: () => Ticket[];
-    getPendingTickets: () => Ticket[];
-    getTicketsByAssignee: (assigneeId: number) => Ticket[];
 }
 
 // Combined store interface
@@ -68,23 +62,6 @@ export const useTicketStore = create<TicketStore>()(
                 { tickets },
                 false
             );
-        },
-
-        // Computed getters (pure helpers)
-        getTicketById: (id) => {
-            return get().tickets.find((ticket) => ticket.id === id);
-        },
-
-        getCompletedTickets: () => {
-            return get().tickets.filter((ticket) => ticket.completed);
-        },
-
-        getPendingTickets: () => {
-            return get().tickets.filter((ticket) => !ticket.completed);
-        },
-
-        getTicketsByAssignee: (assigneeId) => {
-            return get().tickets.filter((ticket) => ticket.assigneeId === assigneeId);
         },
     })
 );

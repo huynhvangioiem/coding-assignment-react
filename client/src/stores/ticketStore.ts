@@ -9,7 +9,7 @@ interface TicketState {
 // Interface for the ticket store actions (domain only)
 interface TicketActions {
     // CRUD operations
-    addTicket: (ticket: Omit<Ticket, 'id'>) => void;
+    addTicket: (ticket: Ticket) => void;
     updateTicket: (id: number, updates: Partial<Omit<Ticket, 'id'>>) => void;
     deleteTicket: (id: number) => void;
 
@@ -33,19 +33,10 @@ export const useTicketStore = create<TicketStore>()(
         tickets: [],
 
         // CRUD Actions
-        addTicket: (ticketData) => {
-            const tickets = get().tickets;
-            // Generate a new ID (in a real app, this would come from the backend)
-            const newId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
-
-            const newTicket: Ticket = {
-                id: newId,
-                ...ticketData,
-            };
-
+        addTicket: (ticket: Ticket) => {
             set(
                 (state) => ({
-                    tickets: [...state.tickets, newTicket],
+                    tickets: [...state.tickets, ticket],
                 }),
                 false
             );

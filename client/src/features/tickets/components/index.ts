@@ -4,6 +4,7 @@ export { TicketStatusBadge } from "./TicketStatusBadge";
 export { TicketActions } from "./TicketActions";
 export { TicketCard } from "./TicketCard";
 export { TicketList } from "./TicketList";
+export { AddTicketModal } from "./AddTicketModal";
 
 export type { TicketHeaderProps } from "./TicketHeader";
 export type { SearchFiltersProps } from "./SearchFilters";
@@ -11,3 +12,4 @@ export type { TicketStatusBadgeProps } from "./TicketStatusBadge";
 export type { TicketActionsProps } from "./TicketActions";
 export type { TicketCardProps } from "./TicketCard";
 export type { TicketListProps } from "./TicketList";
+export type { AddTicketModalProps } from "./AddTicketModal";

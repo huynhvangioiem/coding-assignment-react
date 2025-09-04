@@ -3,8 +3,13 @@ import {
     TicketHeader,
     SearchFilters,
     TicketList,
+    AddTicketModal,
 } from "../../features/tickets/components";
-import { useTickets, useUsers } from "../../features/tickets/hooks";
+import {
+    useTickets,
+    useUsers,
+    useCreateTicket,
+} from "../../features/tickets/hooks";
 import { useTicketStore } from "../../stores/ticketStore";
 import { useUserStore } from "../../stores/userStore";
 
@@ -13,6 +18,9 @@ export function Tickets() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All Status");
     const [assigneeFilter, setAssigneeFilter] = useState("All Assignees");
+
+    // State for add ticket modal
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const {
         loading: ticketsLoading,
@@ -24,6 +32,13 @@ export function Tickets() {
         error: usersError,
         refetch: refetchUsers,
     } = useUsers();
+    const {
+        createTicket,
+        loading: createLoading,
+        error: createError,
+        resetError,
+    } = useCreateTicket();
+
     const tickets = useTicketStore((state) => state.tickets);
     const users = useUserStore((state) => state.users);
 
@@ -47,8 +62,18 @@ export function Tickets() {
 
     // Event handlers
     const handleAddTicket = () => {
-        console.log("Add ticket clicked");
-        // TODO: Implement add ticket functionality
+        setIsAddModalOpen(true);
+        resetError();
+    };
+
+    const handleCloseAddModal = () => {
+        setIsAddModalOpen(false);
+        resetError();
+    };
+
+    const handleCreateTicket = async (description: string) => {
+        await createTicket(description);
+        // Modal will close automatically on success
     };
 
     const handleEditTicket = (id: number) => {
@@ -152,6 +177,14 @@ export function Tickets() {
                     />
                 )}
             </div>
+
+            {/* Add Ticket Modal */}
+            <AddTicketModal
+                isOpen={isAddModalOpen}
+                onClose={handleCloseAddModal}
+                onSubmit={handleCreateTicket}
+                loading={createLoading}
+            />
         </div>
     );
 }
